@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,14 +84,19 @@
 <body>
 
     <div class="container">
-        <h1>🍽️ Smart Canteen</h1>
-        <p>Welcome to your Smart Food Management System</p>
+    <h1>🍽️ Smart Canteen</h1>
+    <p>Welcome to your Smart Food Management System</p>
 
-        <div class="buttons">
+    <div class="buttons">
+        <a href="{% url 'login' %}">
             <button class="btn login">Login</button>
+        </a>
+
+        <a href="{% url 'signup' %}">
             <button class="btn signup">Signup</button>
-        </div>
+        </a>
     </div>
+</div>
 
 </body>
 </html>
