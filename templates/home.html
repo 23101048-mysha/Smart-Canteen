@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Canteen</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #232526, #414345);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 60px;
+            margin-bottom: 10px;
+            color: #D4A017; /* Mustard */
+        }
+
+        p {
+            font-size: 22px;
+            color: #ddd;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border: none;
+        }
+
+        /* Login Button */
+        .login {
+            background: #D4A017;
+            color: black;
+        }
+
+        .login:hover {
+            background: white;
+            color: black;
+        }
+
+        /* Signup Button */
+        .signup {
+            background: transparent;
+            border: 2px solid #D4A017;
+            color: #D4A017;
+        }
+
+        .signup:hover {
+            background: #D4A017;
+            color: black;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🍽️ Smart Canteen</h1>
+        <p>Welcome to your Smart Food Management System</p>
+
+        <div class="buttons">
+            <button class="btn login">Login</button>
+            <button class="btn signup">Signup</button>
+        </div>
+    </div>
+
+</body>
+</html>
