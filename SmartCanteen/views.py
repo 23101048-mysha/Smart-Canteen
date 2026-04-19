@@ -27,3 +27,25 @@ def login_page(request):
         'login_type': login_type,
         'error': error
     })
+def signup_page(request):
+    if request.method == 'POST':
+        fullname = request.POST['fullname']
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        # role = request.POST['role'] # Jodi role model-e na thake, eita error dite pare
+
+        if password == confirm_password:
+            user = User.objects.create_user(
+                first_name=fullname,
+                username=username,
+                email=email,
+                password=password
+            )
+            user.save()
+            login(request, user) # Auto login korbe
+
+            return redirect('dashboard')
+
+    return render(request, 'signup.html')

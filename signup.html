@@ -2,33 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup - Smart Canteen</title>
 
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#232526,#414345);
+            font-family:Arial;
+        }
+
+        .container{
+            width:400px;
+            background:rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+            text-align:center;
+            box-shadow:0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h1{
+            color:#D4A017;
+            margin-bottom:25px;
+        }
+
+        input, select{
+            width:100%;
+            padding:14px;
+            margin:10px 0;
+            border:none;
+            outline:none;
+            border-radius:10px;
+            font-size:15px;
+        }
+
+        .btn{
+            width:100%;
+            padding:14px;
+            margin-top:15px;
+            border:none;
+            border-radius:25px;
+            background:#D4A017;
+            color:black;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn:hover{
+            background:white;
+        }
+
+        p{
+            color:white;
+            margin-top:15px;
+        }
+
+        a{
+            color:#D4A017;
+            text-decoration:none;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
 <div class="container">
-    <h1>🍽 Smart Canteen</h1>
-    <h2>Signup</h2>
 
-    {% load static %}
+    <h1>Create Account</h1>
 
-<form method="POST" action="{% url 'signup' %}">
-    {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
 
-    <input type="text" name="username" placeholder="Username"><br>
-    <input type="email" name="email" placeholder="Email"><br>
-    <input type="password" name="password" placeholder="Password"><br>
+        <input type="text" name="fullname" placeholder="Full Name" required>
 
-    <!-- 🔥 Role -->
-    <select name="role">
-        <option value="student">Student</option>
-        <option value="staff">Staff</option>
-    </select><br><br>
+        <input type="text" name="username" placeholder="Username" required>
 
-    <button type="submit">Signup</button>
-</form>
-    <p>Already have an account? <a href="/">Login</a></p>
+        <input type="email" name="email" placeholder="Email Address" required>
+
+        <!-- Role select (Student / Staff) -->
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="staff">Staff</option>
+        </select>
+
+        <input type="password" name="password" placeholder="Password" required>
+
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+
+        <button class="btn" type="submit">Sign Up</button>
+
+    </form>
+
+    <p>Already have account? <a href="/login/">Login</a></p>
+
 </div>
 
 </body>
