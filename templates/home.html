@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,14 +84,25 @@
 <body>
 
     <div class="container">
-        <h1>🍽️ Smart Canteen</h1>
-        <p>Welcome to your Smart Food Management System</p>
+    <h1>🍽️ Smart Canteen</h1>
+    <p>Welcome to your Smart Food Management System</p>
 
+<<<<<<< HEAD
         <div class="buttons">
             <button class="btn login" onclick="location.href='/login'">Login</button>
             <button class="btn signup" onclick="location.href='/signup/'">Signup</button>
         </div>
+=======
+    <div class="buttons">
+        <a href="{% url 'login' %}">
+            <button class="btn login">Login</button>
+        </a>
+
+            <button class="btn signup" onclick="location.href='/signup/'">Signup</button>
+        </a>
+>>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
     </div>
+</div>
 
 </body>
 </html>

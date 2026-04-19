@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+<<<<<<< HEAD
 from datetime import datetime
+=======
+>>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
 
+# 🔹 Home page
 def home(request):
     return render(request, 'home.html')
 
@@ -27,7 +31,10 @@ def login_page(request):
         'login_type': login_type,
         'error': error
     })
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
 def signup_page(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
@@ -49,6 +56,7 @@ def signup_page(request):
 
             return redirect('dashboard')
 
+<<<<<<< HEAD
     return render(request, 'signup.html')
 
 def dashboard(request):
@@ -64,3 +72,6 @@ def dashboard(request):
         'specials': specials,
         'current_date': today
     })
+=======
+    return render(request, 'signup.html')
+>>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
