@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-<<<<<<< HEAD
 from datetime import datetime
-=======
->>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
 
 # 🔹 Home page
 def home(request):
@@ -22,6 +19,13 @@ def login_page(request):
         user = authenticate(request, username=u_name, password=p_word)
 
         if user is not None:
+            if login_type == "student" and user.is_staff:
+                error = "You are not a student!"
+                return render(request, 'login.html', {'error': error})
+
+            if login_type == "staff" and not user.is_staff:
+                error = "You are not staff!"
+                return render(request, 'login.html', {'error': error})
             login(request, user)
             return redirect('dashboard')
         else:
@@ -31,10 +35,7 @@ def login_page(request):
         'login_type': login_type,
         'error': error
     })
-<<<<<<< HEAD
 
-=======
->>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
 def signup_page(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
@@ -42,7 +43,7 @@ def signup_page(request):
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-        # role = request.POST['role'] # Jodi role model-e na thake, eita error dite pare
+
 
         if password == confirm_password:
             user = User.objects.create_user(
@@ -56,7 +57,7 @@ def signup_page(request):
 
             return redirect('dashboard')
 
-<<<<<<< HEAD
+
     return render(request, 'signup.html')
 
 def dashboard(request):
@@ -67,11 +68,11 @@ def dashboard(request):
         {'name': 'Milk Tea', 'price': 15, 'qty': '1 Cup', 'icon': '☕', 'available': 50},
         {'name': 'Sandwich', 'price': 45, 'qty': '1 Piece', 'icon': '🥪', 'available': 8},
     ]
-    # EKTAI bracket-er moddhe shob context pathate hoy
+
     return render(request, 'dashboard.html', {
         'specials': specials,
         'current_date': today
     })
-=======
+
     return render(request, 'signup.html')
->>>>>>> 8be2e4f6bffc7e2ee766c147c8cb839638978ac5
+
