@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBite Dashboard</title>
+    <style>
+        /* General Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            background-color: #121212; /* Deep Dark Background */
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background-color: #1a1a1a;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+        }
+
+        .sidebar h2 {
+            color: #D4A017; /* Mustard Yellow */
+            font-size: 26px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #999;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+        }
+
+        .sidebar nav ul li:hover, .sidebar nav ul li.active {
+            background-color: rgba(212, 160, 23, 0.15);
+            color: #D4A017;
+        }
+
+        /* Main Dashboard Area */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        header {
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            color: #ffffff;
+        }
+
+        header p {
+            color: #777;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #D4A017;
+            font-weight: 600;
+        }
+
+        /* Active Order Card */
+        .active-order {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .order-info h4 {
+            font-size: 18px;
+            margin: 8px 0;
+            color: #eee;
+        }
+
+        .status-ready {
+            color: #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .order-total {
+            font-size: 26px;
+            font-weight: bold;
+            color: #D4A017;
+        }
+
+        /* Food Items Grid */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .item-card {
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 25px;
+            text-align: center;
+            border: 1px solid #333;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+        }
+
+        .item-card:hover {
+            transform: translateY(-8px);
+            border-color: #D4A017;
+        }
+
+        .tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(212, 160, 23, 0.2);
+            color: #D4A017;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .item-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .item-card h4 {
+            font-size: 19px;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .qty-info {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .available-stock {
+            color: #D4A017;
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* Price Button Style */
+        .price-tag {
+            background-color: #D4A017;
+            color: #000; /* Pure Black text for contrast */
+            font-weight: bold;
+            font-size: 18px;
+            padding: 7px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(212, 160, 23, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>SmartBite</h2>
+        <nav>
+            <ul>
+                <li class="active">🏠 Dashboard</li>
+                <li>🍽️ Browse Menu</li>
+                <li>📋 My Orders</li>
+                <li>🔔 Notifications</li>
+                <li>⭐ Feedback</li>
+                <li>👤 Profile</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>Hello, {{ user.username}} </h1>
+            <p>{{ current_date|date:"l, d F Y" }} · Enjoy your meal!</p>
+        </header>
+
+        <section>
+            <h3>Active Order</h3>
+            <div class="active-order">
+                <div class="order-info">
+                    <p style="color: #555; font-size: 12px;">ID: #1042</p>
+                    <h4>2× Chicken Rice, 1× Mango Lassi</h4>
+                    <span class="status-ready">Ready to Pickup</span>
+                </div>
+                <div class="order-total">
+                    ৳ 220
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>Today's Specials</h3>
+            <div class="item-grid">
+
+                <div class="item-card">
+                    <span class="tag">Popular</span>
+                    <div class="item-icon">🍗</div>
+                    <h4>Chicken Biriyani</h4>
+                    <p class="qty-info">1 Plate</p>
+                    <span class="available-stock">Available: 25 items left</span>
+                    <div class="price-tag">৳ 120</div>
+                </div>
+
+                <div class="item-card">
+                    <span class="tag">Fresh</span>
+                    <div class="item-icon">🍳</div>
+                    <h4>Khichuri & Egg</h4>
+                    <p class="qty-info">1 Bowl</p>
+                    <span class="available-stock">Available: 12 items left</span>
+                    <div class="price-tag">৳ 60</div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-icon">☕</div>
+                    <h4>Milk Tea</h4>
+                    <p class="qty-info">1 Cup</p>
+                    <span class="available-stock">Available: 50 items left</span>
+                    <div class="price-tag">৳ 15</div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-icon">🥪</div>
+                    <h4>Sandwich</h4>
+                    <p class="qty-info">1 Piece</p>
+                    <span class="available-stock">Available: 8 items left</span>
+                    <div class="price-tag">৳ 45</div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
