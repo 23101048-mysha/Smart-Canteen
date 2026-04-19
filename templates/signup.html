@@ -1,34 +1,41 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Signup - Smart Canteen</title>
 
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
 <div class="container">
-    <h1>🍽 Smart Canteen</h1>
-    <h2>Signup</h2>
+    <div class="card">
+        <h1>🍽 Smart Canteen</h1>
+        <h2>Create Account</h2>
 
-    {% load static %}
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
 
-<form method="POST" action="{% url 'signup' %}">
-    {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter your username" required>
 
-    <input type="text" name="username" placeholder="Username"><br>
-    <input type="email" name="email" placeholder="Email"><br>
-    <input type="password" name="password" placeholder="Password"><br>
+            <input type="email" name="email" placeholder="Enter your email" required>
 
-    <!-- 🔥 Role -->
-    <select name="role">
-        <option value="student">Student</option>
-        <option value="staff">Staff</option>
-    </select><br><br>
+            <input type="password" name="password" placeholder="Enter your password" required>
 
-    <button type="submit">Signup</button>
-</form>
-    <p>Already have an account? <a href="/">Login</a></p>
+            <select name="role">
+                <option value="" disabled selected>Select role</option>
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+            </select>
+
+            <button type="submit">Signup</button>
+        </form>
+
+        <p>Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
 </div>
 
 </body>

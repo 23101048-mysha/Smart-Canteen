@@ -1,4 +1,49 @@
-<h1>👨‍💼 Staff Dashboard</h1>
-<p>Welcome {{ request.user.username }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Dashboard</title>
 
-<a href="{% url 'logout' %}">Logout</a>
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- 🔹 Navbar -->
+    <div class="navbar">
+        <h2>🍽 Smart Canteen</h2>
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
+
+    <!-- 🔹 Main Content -->
+    <div class="content">
+        <h1>👨‍💼 Staff Dashboard</h1>
+        <p class="welcome">Welcome, {{ request.user.username }}</p>
+
+        <!-- 🔥 Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>📦 Manage Orders</h3>
+                <p>View and control all food orders</p>
+            </div>
+
+            <div class="card">
+                <h3>🍔 Menu Control</h3>
+                <p>Add / Edit food items</p>
+            </div>
+
+            <div class="card">
+                <h3>📊 Reports</h3>
+                <p>Check sales and analytics</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

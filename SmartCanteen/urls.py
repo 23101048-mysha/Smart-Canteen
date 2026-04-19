@@ -21,12 +21,6 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
 
-    path('login/', views.login_view, name='login'),
-    path('signup/', views.signup_view, name='signup'),
-
-    # 🔥 dashboards (names MUST match)
-    path('student/', views.student_dashboard, name='student_dashboard'),
-    path('staff/', views.staff_dashboard, name='staff_dashboard'),
-
-    path('logout/', views.logout_view, name='logout'),
+path('login/', views.login_page, name='login'),
 ]
+

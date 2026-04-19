@@ -1,31 +1,83 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Login - Smart Canteen</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #232526, #414345);
+            display: flex; justify-content: center; align-items: center;
+            font-family: Arial, sans-serif; color: white;
+        }
+        .container { text-align: center; }
+        h1 { font-size: 40px; color: #D4A017; margin-bottom: 30px; }
+
+        /* Selection Cards */
+        .box { display: flex; gap: 30px; justify-content: center; }
+        .card-link { text-decoration: none; color: white; }
+        .card {
+            width: 180px; padding: 40px 20px; border-radius: 15px;
+            cursor: pointer; transition: 0.3s; border: 2px solid #D4A017;
+            font-weight: bold; font-size: 18px; text-align: center;
+        }
+        .card:hover { background: #D4A017; color: black; transform: scale(1.05); }
+
+        /* Form Styling */
+        .login-box {
+            background: rgba(0, 0, 0, 0.3); padding: 30px;
+            border-radius: 20px; border: 1px solid #444; width: 350px;
+        }
+        input {
+            width: 100%; padding: 12px; margin: 10px 0;
+            border-radius: 8px; border: 1px solid #555; background: #222; color: white;
+        }
+        .login-btn {
+            width: 100%; padding: 12px; margin-top: 15px;
+            background: #D4A017; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer;
+        }
+        .back-link { margin-top: 15px; display: block; color: #aaa; text-decoration: none; font-size: 14px; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🍽 Smart Canteen</h1>
-    <h2>Login</h2>
+    <div class="container">
 
-    <form method="POST" action="{% url 'login' %}">
-    {% csrf_token %}
+        {% if login_type %}
 
-    <input type="text" name="username" required><br>
-    <input type="password" name="password" required><br>
+            <h1>{{ login_type|title }} Login</h1>
+            <div class="login-box">
+                <form method="POST" action="{% url 'login' %}?type={{ login_type }}">
+                    {% csrf_token %}
 
-    <select name="role">
-        <option value="student">Student</option>
-        <option value="staff">Staff</option>
-    </select><br><br>
+                    {% if error %}
+                        <p style="color: #ff4d4d; margin-bottom: 10px;">{{ error }}</p>
+                    {% endif %}
 
-    <button type="submit">Login</button>
-</form>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+                <a href="{% url 'login' %}" class="back-link">← Back to Selection</a>
+            </div>
 
-    <p>Don't have an account? <a href="/signup/">Signup</a></p>
-</div>
+        {% else %}
+
+            <h1>Select Login Type</h1>
+            <div class="box">
+                <a href="?type=student" class="card-link">
+                    <div class="card">Student Login</div>
+                </a>
+                <a href="?type=staff" class="card-link">
+                    <div class="card">Staff Login</div>
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
 
 </body>
 </html>

@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #141414, #2c2c2c);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.card {
+    width: 360px;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+/* Title */
+h1 {
+    color: #f4b942;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+/* Input box */
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box input,
+.input-box select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* Floating label */
+.input-box label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #777;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.input-box input:focus + label,
+.input-box input:valid + label {
+    top: -8px;
+    left: 8px;
+    font-size: 12px;
+    color: #f4b942;
+    background: #1f1f1f;
+    padding: 0 5px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: #f4b942;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: orange;
+}
+
+/* Link */
+.link {
+    margin-top: 20px;
+    color: #aaa;
+}
+
+.link a {
+    color: #f4b942;
+    text-decoration: none;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .card {
+        width: 90%;
+        padding: 25px;
+    }
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Background */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    background: linear-gradient(135deg, #232526, #414345);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    padding: 20px;
+}
+
+/* Card */
+.card {
+    max-width: 400px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* Headings */
+h1 {
+    color: #D4A017;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Inputs */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: #D4A017;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: white;
+}
+
+/* Link */
+p {
+    margin-top: 15px;
+    color: #ccc;
+}
+
+a {
+    color: #D4A017;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 🔥 Responsive */
+@media (max-width: 500px) {
+    .card {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    padding: 20px;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.logout-btn {
+    background: #D4A017;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: white;
+}
+
+/* Welcome Card */
+.welcome-card {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.welcome-card h1 {
+    color: #D4A017;
+}
+
+/* Cards Grid */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Individual Card */
+.card-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card-box:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.1);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #232526, #414345);
+    color: white;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(0,0,0,0.3);
+}
+
+.navbar h2 {
+    color: #D4A017;
+}
+
+.logout {
+    text-decoration: none;
+    background: #D4A017;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: black;
+    transition: 0.3s;
+}
+
+.logout:hover {
+    background: white;
+}
+
+/* Content */
+.content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.welcome {
+    margin-top: 10px;
+    color: #ccc;
+}
+
+/* Cards */
+.cards {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    width: 250px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.1);
+}
+
+.card h3 {
+    color: #D4A017;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+    }
+}

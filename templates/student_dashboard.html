@@ -1,4 +1,49 @@
-<h1>🎓 Student Dashboard</h1>
-<p>Welcome {{ request.user.username }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
 
-<a href="{% url 'logout' %}">Logout</a>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Top Bar -->
+    <div class="navbar">
+        <h2>🎓 Student Dashboard</h2>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Welcome -->
+    <div class="welcome-card">
+        <h1>Welcome, {{ request.user.username }} 👋</h1>
+        <p>Manage your food orders and explore the canteen easily.</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+        <div class="card-box">
+            <h3>🍔 Order Food</h3>
+            <p>Browse menu & place your order</p>
+        </div>
+
+        <div class="card-box">
+            <h3>📦 My Orders</h3>
+            <p>Check your previous orders</p>
+        </div>
+
+        <div class="card-box">
+            <h3>💳 Payments</h3>
+            <p>View payment history</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
