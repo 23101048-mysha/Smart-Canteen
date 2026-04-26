@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from datetime import datetime
+from django.shortcuts import render
+
 
 # 🔹 Home page
 def home(request):
@@ -9,7 +11,7 @@ def home(request):
 
 
 def login_page(request):
-    login_type = request.GET.get('type')  # URL theke 'student' ba 'staff' dhorbe
+    login_type = request.GET.get('type')
     error = None
 
     if request.method == 'POST':
@@ -75,4 +77,52 @@ def dashboard(request):
     })
 
     return render(request, 'signup.html')
+def menu(request):
+    query = request.GET.get('q')
 
+    foods = [
+        {
+            "name": "Chicken Biriyani",
+            "emoji": "🍗",
+            "category": "Rice",
+            "price": "120",
+            "stock": "25 items left"
+        },
+        {
+            "name": "Khichuri & Egg",
+            "emoji": "🍳",
+            "category": "Rice",
+            "price": "60",
+            "stock": "12 items left"
+        },
+        {
+            "name": "Milk Tea",
+            "emoji": "☕",
+            "category": "Drinks",
+            "price": "15",
+            "stock": "50 items left"
+        },
+        {
+            "name": "Cold Coffee",
+            "emoji": "🥤",
+            "category": "Drinks",
+            "price": "40",
+            "stock": "Out of Stock"
+        },
+        {
+            "name": "Sandwich",
+            "emoji": "🥪",
+            "category": "Snacks",
+            "price": "45",
+            "stock": "8 items left"
+        },
+    ]
+
+    if query:
+        foods = [
+            food for food in foods
+            if query.lower() in food["name"].lower()
+            or query.lower() in food["category"].lower()
+        ]
+
+    return render(request, 'menu.html', {'foods': foods})

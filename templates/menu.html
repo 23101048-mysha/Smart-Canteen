@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBite - Browse Menu</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body{
+            background:#0d0d0d;
+            color:#e0e0e0;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        .sidebar-item:hover{
+            background:#1a1a1a;
+            color:#D4A017;
+            border-radius:12px;
+        }
+
+        .active-nav{
+            background:rgba(212,160,23,0.15);
+            color:#D4A017;
+            border-radius:12px;
+        }
+
+        .card-bg{
+            background:#141414;
+            border:1px solid #1f1f1f;
+            border-radius:25px;
+            transition:.3s;
+        }
+
+        .card-bg:hover{
+            border-color:#D4A017;
+            transform:translateY(-5px);
+        }
+
+        .no-scrollbar::-webkit-scrollbar{
+            display:none;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+<!-- Sidebar -->
+<aside class="w-64 bg-[#0d0d0d] border-r border-gray-900 flex flex-col p-6">
+
+    <div class="text-2xl font-bold text-[#D4A017] mb-10 text-center tracking-wide">
+        SmartBite
+    </div>
+
+    <nav class="space-y-2 flex-1">
+
+        <a href="{% url 'dashboard' %}"
+        class="sidebar-item flex items-center gap-3 p-3 text-gray-500 transition">
+            <i class="fas fa-home w-5"></i> Dashboard
+        </a>
+
+        <a href="{% url 'menu' %}"
+        class="active-nav flex items-center gap-3 p-3">
+            <i class="fas fa-utensils w-5"></i> Browse Menu
+        </a>
+
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
+            <i class="fas fa-file-alt w-5"></i> orders_view
+        </a>
+
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
+            <i class="fas fa-bell w-5"></i> Notifications
+        </a>
+
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
+            <i class="fas fa-star w-5"></i> Feedback
+        </a>
+
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
+            <i class="fas fa-user w-5"></i> Profile
+        </a>
+
+    </nav>
+
+    <!-- User -->
+    <div class="pt-6 border-t border-gray-900">
+
+        <div class="flex items-center gap-3">
+
+            <div class="w-10 h-10 bg-[#D4A017] rounded-full flex items-center justify-center text-black font-bold">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+
+            <div class="flex-1">
+                <p class="text-sm font-semibold text-white">{{ user.username }}</p>
+                <p class="text-[10px] text-gray-500 uppercase">
+                    {% if user.is_staff %}Staff{% else %}Student{% endif %}
+                </p>
+            </div>
+
+            <a href="#" class="text-gray-600 hover:text-red-500">
+                <i class="fas fa-power-off"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</aside>
+
+<!-- Main -->
+<main class="flex-1 overflow-y-auto p-10 no-scrollbar">
+
+    <header class="mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2">Browse Menu</h1>
+        <p class="text-gray-500">Fresh items updated daily</p>
+    </header>
+
+    <!-- Search -->
+    <form method="GET" class="relative mb-8 max-w-5xl">
+
+        <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
+
+        <input
+            type="text"
+            name="q"
+            value="{{ request.GET.q }}"
+            placeholder="Search items..."
+            class="w-full bg-[#141414] border border-gray-800 rounded-2xl py-4 pl-14 pr-4 focus:outline-none focus:border-[#D4A017] text-gray-300">
+
+    </form>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+
+        {% for food in foods %}
+
+        <div class="card-bg p-6 relative flex flex-col items-center">
+
+            <div class="text-6xl my-4">
+                {{ food.emoji }}
+            </div>
+
+            <h3 class="font-bold text-white text-lg text-center">
+                {{ food.name }}
+            </h3>
+
+            <p class="text-[11px] text-gray-500 uppercase tracking-widest mb-1">
+                {{ food.category }}
+            </p>
+
+            {% if food.stock == "Out of Stock" %}
+
+                <p class="text-red-500 font-semibold mb-6">
+                    {{ food.stock }}
+                </p>
+
+                <div class="mt-auto w-full text-center">
+                    <span class="text-red-500 font-bold uppercase">
+                        Unavailable
+                    </span>
+                </div>
+
+            {% else %}
+
+                <p class="text-[12px] text-[#D4A017] font-semibold mb-6">
+                    Available: {{ food.stock }}
+                </p>
+
+                <div class="mt-auto w-full flex justify-between items-center">
+
+                    <span class="text-white font-bold">
+                        ৳ {{ food.price }}
+                    </span>
+
+                    <button class="bg-[#D4A017] text-black w-8 h-8 rounded-lg font-bold hover:scale-110 transition">
+                        +
+                    </button>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        {% empty %}
+
+        <p class="text-red-500 text-xl">No food found</p>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+</html>

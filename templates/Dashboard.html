@@ -204,9 +204,16 @@
         <h2>SmartBite</h2>
         <nav>
             <ul>
-                <li class="active">🏠 Dashboard</li>
-                <li>🍽️ Browse Menu</li>
-                <li>📋 My Orders</li>
+               <a href="{% url 'dashboard' %}" style="text-decoration: none;">
+            <li class="active">🏠 Dashboard</li>
+        </a>
+
+        <a href="{% url 'menu' %}" style="text-decoration: none;">
+            <li>🍽️ Browse Menu</li>
+        </a>
+                <a href="#" style="text-decoration: none;">
+    <li>📋 My Orders</li>
+</a>
                 <li>🔔 Notifications</li>
                 <li>⭐ Feedback</li>
                 <li>👤 Profile</li>
