@@ -24,7 +24,10 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('signup/', views.signup_page, name='signup'),
     path('dashboard/', views.dashboard, name='dashboard'),
-path('menu/', views.menu, name='menu'),
+    path('menu/', views.menu, name='menu'),
+    path('orders/', views.orders_view, name='orders_view'),
+    path('add-order/', views.add_to_order, name='add_to_order'),
+    path('cancel-order/<str:order_id>/', views.cancel_order, name='cancel_order'),
 ]
 
 

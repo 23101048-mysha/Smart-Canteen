@@ -67,7 +67,7 @@
             <i class="fas fa-utensils w-5"></i> Browse Menu
         </a>
 
-        <a href="#" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
+        <a href="{% url 'orders_view' %}" class="sidebar-item flex items-center gap-3 p-3 text-gray-500">
             <i class="fas fa-file-alt w-5"></i> orders_view
         </a>
 
@@ -170,29 +170,42 @@
                     Available: {{ food.stock }}
                 </p>
 
-                <div class="mt-auto w-full flex justify-between items-center">
+                <div class="mt-auto w-full">
+        <form method="POST" action="{% url 'add_to_order' %}" class="w-full flex flex-col gap-2 mt-2">
+    {% csrf_token %}
+    <input type="hidden" name="item_name" value="{{ food.name }}">
+    <input type="hidden" name="price" value="{{ food.price }}">
 
-                    <span class="text-white font-bold">
-                        ৳ {{ food.price }}
-                    </span>
-
-                    <button class="bg-[#D4A017] text-black w-8 h-8 rounded-lg font-bold hover:scale-110 transition">
-                        +
-                    </button>
-
-                </div>
-
-            {% endif %}
-
+    <div class="grid grid-cols-2 gap-2">
+        <div class="flex flex-col">
+            <label class="text-[8px] text-gray-500 uppercase tracking-tighter mb-1">Pickup</label>
+            <select name="pickup_type" class="bg-[#1a1a1a] border border-gray-800 text-[10px] text-gray-300 rounded-md p-1 outline-none focus:border-[#D4A017]">
+                <option value="Takeaway">Takeaway</option>
+                <option value="Dine-in">Dine-in</option>
+            </select>
         </div>
 
-        {% empty %}
-
-        <p class="text-red-500 text-xl">No food found</p>
-
-        {% endfor %}
-
+        <div class="flex flex-col">
+            <label class="text-[8px] text-gray-500 uppercase tracking-tighter mb-1">Payment</label>
+            <select name="payment_method" class="bg-[#1a1a1a] border border-gray-800 text-[10px] text-gray-300 rounded-md p-1 outline-none focus:border-[#D4A017]">
+                <option value="Cash">Cash</option>
+                <option value="Bkash">bKash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
+        </div>
     </div>
+
+    <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-900">
+        <span class="text-white font-bold text-sm">৳ {{ food.price }}</span>
+        <button type="submit" class="bg-[#D4A017] text-black px-3 py-1.5 rounded-lg text-xs font-bold hover:scale-105 transition active:scale-95 shadow-lg shadow-[#D4A017]/10">
+            Order Now
+        </button>
+    </div>
+</form>
+    </div>
+    {% endif %}
+</div> {% endfor %} </div>
+
 
 </main>
 

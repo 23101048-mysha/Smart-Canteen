@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBite - My Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --sidebar: #111111;
+            --gold: #D4A017;
+            --card: #141414;
+            --text-muted: #888;
+            --border: #1f1f1f;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: var(--sidebar);
+            padding: 30px 20px;
+            position: fixed;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            color: var(--gold);
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            display: block;
+            text-decoration: none;
+            padding-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            padding: 14px 15px;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(212, 160, 23, 0.15);
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .nav-icon { margin-right: 12px; width: 20px; text-align: center; }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 250px;
+            padding: 50px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        header h1 { font-size: 36px; margin-bottom: 10px; }
+        header p { color: var(--text-muted); margin-bottom: 40px; }
+
+        .order-container {
+            background: var(--card);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            text-align: left;
+            color: #555;
+            font-size: 11px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: #eee;
+        }
+
+        .order-id { font-weight: bold; color: white; font-family: monospace; font-size: 16px; }
+        .price-text { color: var(--gold); font-weight: bold; font-size: 16px; }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-ready { border: 1px solid #2ecc71; color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        .status-pending { border: 1px solid #f1c40f; color: #f1c40f; background: rgba(241, 196, 15, 0.1); }
+        .status-completed { border: 1px solid #3498db; color: #3498db; background: rgba(52, 152, 219, 0.1); }
+        .status-cancelled { border: 1px solid #ff4d4d; color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
+
+        .payment-tag {
+            background: #222;
+            color: #bbb;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            border: 1px solid #333;
+            display: inline-block;
+        }
+
+        .pay-btn {
+            background: #e2136e;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .pay-btn:hover {
+            background: #ff007f;
+            transform: scale(1.05);
+        }
+
+        .cancel-link {
+            color: #ff4d4d;
+            font-size: 11px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .cancel-link:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
+        .pickup-type {
+            color: #3498db;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="no-scrollbar">
+
+    <div class="sidebar">
+        <div>
+            <a href="{% url 'dashboard' %}" class="logo">SmartBite</a>
+
+            <nav>
+                <a href="{% url 'dashboard' %}" class="nav-item">
+                    <i class="fas fa-home nav-icon"></i> Dashboard
+                </a>
+                <a href="{% url 'menu' %}" class="nav-item">
+                    <i class="fas fa-utensils nav-icon"></i> Browse Menu
+                </a>
+                <a href="{% url 'orders_view' %}" class="nav-item active">
+                    <i class="fas fa-file-invoice nav-icon"></i> My Orders
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-bell nav-icon"></i> Notifications
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-star nav-icon"></i> Feedback
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-user nav-icon"></i> Profile
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>My Orders</h1>
+            <p>Track your real-time order status and history</p>
+        </header>
+
+        <div class="order-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date & Time</th>
+                        <th>Items</th>
+                        <th>Amount</th>
+                        <th>Pickup</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="order-id">{{ order.order_id }}</td>
+                        <td style="color: var(--text-muted);">{{ order.created_at|date:"M d, g:i A" }}</td>
+                        <td style="max-width: 250px; color: #ddd; font-weight: 500;">{{ order.items }}</td>
+
+                        <td class="price-text">৳ {{ order.amount }}</td>
+
+                        <td class="pickup-type">
+                            {% if order.pickup_type == "Dine-in" %}
+                                <i class="fas fa-chair text-xs"></i>
+                            {% else %}
+                                <i class="fas fa-shopping-bag text-xs"></i>
+                            {% endif %}
+                            {{ order.pickup_type }}
+                        </td>
+
+                        <td>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <span class="payment-tag">{{ order.payment_method }}</span>
+
+                                {% if order.status == "Pending" %}
+                                    {% if order.payment_method != "Cash" %}
+                                        {% if order.is_paid %}
+                                            <span style="color: #2ecc71; font-size: 11px; font-weight: bold;">
+                                                <i class="fas fa-check-circle"></i> PAID
+                                            </span>
+                                        {% else %}
+                                            <a href="#" class="pay-btn">PAY NOW</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <span style="color: #666; font-size: 11px;">Pay at Counter</span>
+                                    {% endif %}
+
+                                    <a href="{% url 'cancel_order' order.order_id %}"
+                                       class="cancel-link"
+                                       onclick="return confirm('Are you sure you want to cancel this order?')">
+                                        <i class="fas fa-times-circle"></i> Cancel Order
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <td>
+                            {% if order.status == "Ready" %}
+                                <span class="status-badge status-ready">Ready</span>
+                            {% elif order.status == "Completed" %}
+                                <span class="status-badge status-completed">Completed</span>
+                            {% elif order.status == "Cancelled" %}
+                                <span class="status-badge status-cancelled">Cancelled</span>
+                            {% else %}
+                                <span class="status-badge status-pending">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #555; padding: 100px; font-size: 18px;">
+                            <i class="fas fa-box-open" style="display: block; font-size: 40px; margin-bottom: 10px;"></i>
+                            No orders found yet. Start ordering from the menu!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

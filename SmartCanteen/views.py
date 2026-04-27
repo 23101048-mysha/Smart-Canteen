@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+import random
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from datetime import datetime
 from django.shortcuts import render
-
+from .models import Order
 
 # 🔹 Home page
 def home(request):
@@ -126,3 +128,44 @@ def menu(request):
         ]
 
     return render(request, 'menu.html', {'foods': foods})
+
+
+import random
+from django.shortcuts import render, redirect
+from .models import Order
+
+def add_to_order(request):
+    if request.method == "POST":
+        item_name = request.POST.get('item_name')
+        price = request.POST.get('price')
+        pickup = request.POST.get('pickup_type', 'Takeaway')
+        payment = request.POST.get('payment_method', 'Cash')
+
+        new_id = f"SB-{random.randint(1000, 9999)}"
+
+        Order.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            order_id=new_id,
+            items=item_name,
+            amount=int(float(price)),
+            pickup_type=pickup,
+            payment_method=payment,
+            status="Pending"
+        )
+        return redirect('orders_view')
+    return redirect('menu')
+
+def orders_view(request):
+    all_orders = Order.objects.all().order_by('-created_at')
+    return render(request, 'orders.html', {'orders': all_orders})
+
+
+def cancel_order(request, order_id):
+
+    order = get_object_or_404(Order, order_id=order_id)
+
+    if order.status == 'Pending':
+        order.status = 'Cancelled'
+        order.save()
+
+    return redirect('orders_view')
