@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User  # User মডেলটি ইম্পোর্ট করতে হবে
-
+from django.contrib.auth.models import User
 
 class Order(models.Model):
     # Choice Lists
@@ -24,21 +23,14 @@ class Order(models.Model):
     ]
 
     # Fields
-    # User-কে অর্ডারের সাথে লিঙ্ক করা হলো
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
     order_id = models.CharField(max_length=20, unique=True)
-    items = models.TextField()  # Example: "Burger x2, Pizza x1"
-
+    items = models.TextField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-
     pickup_type = models.CharField(max_length=20, choices=PICKUP_CHOICES, default='Takeaway')
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='Cash')
-
-    # Payment status track korar jonno naya field
     is_paid = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
-
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -47,3 +39,15 @@ class Order(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+# প্রোফাইল ক্লাসটি অর্ডার ক্লাসের বাইরে একদম আলাদাভাবে থাকবে
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    department = models.CharField(max_length=50, blank=True, null=True)
+    student_id = models.CharField(max_length=20, blank=True, null=True)
+    role = models.CharField(max_length=20, default='Student')
+    address = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"

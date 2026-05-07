@@ -4,7 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from datetime import datetime
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from .models import Order, Profile
+from .forms import ProfileUpdateForm
 from .models import Order
 
 # 🔹 Home page
@@ -169,3 +173,18 @@ def cancel_order(request, order_id):
         order.save()
 
     return redirect('orders_view')
+@login_required
+def profile_view(request):
+    user_profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=user_profile)
+
+    return render(request, 'profile.html', {'form': form})
+
