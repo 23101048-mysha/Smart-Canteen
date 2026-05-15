@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - SmartBite</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Card Layout Transformation */
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(249, 115, 22, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Interactive Modern Badges */
+        .order-badge {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px 14px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Message Box Customization */
+        .message-quote {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.01);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary-orange);
+            font-style: italic;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body class="p-6 md:p-12 max-w-4xl mx-auto">
+
+<div class="flex justify-between items-center mb-10 border-b border-white/5 pb-6">
+    <div>
+        <h1 class="text-4xl font-black text-white tracking-tight flex items-center gap-2">
+            <i class="fa-solid fa-star text-orange-500 text-3xl"></i> Customer Reviews
+        </h1>
+        <p class="text-slate-500 font-medium mt-1">Real-time ratings and experience metrics submitted by customers</p>
+    </div>
+
+    <a href="{% url 'staff_dashboard' %}"
+       class="bg-white/5 border border-white/5 text-slate-300 px-5 py-2.5 rounded-xl text-xs uppercase font-black tracking-wider hover:bg-white/10 transition-all flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+    </a>
+</div>
+
+{% for r in reviews %}
+
+<div class="card p-6 md:p-8 mb-6 shadow-2xl">
+
+    <div class="flex justify-between items-center mb-4">
+        <div class="text-white font-extrabold text-base flex items-center gap-2 tracking-tight">
+            <i class="fa-solid fa-circle-user text-slate-500 text-lg"></i> {{ r.user.username }}
+        </div>
+
+        <div class="order-badge">
+            Order #{{ r.order.id }}
+        </div>
+    </div>
+
+    <div class="flex gap-1 text-[#facc15] text-sm my-3">
+        {% for i in "12345" %}
+            {% if forloop.counter <= r.rating %}
+                <i class="fa-solid fa-star"></i>
+            {% else %}
+                <i class="fa-regular fa-star opacity-20"></i>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="text-sm font-semibold text-slate-400 space-y-1.5 my-4 bg-white/[0.01] p-3.5 rounded-xl border border-white/5 max-w-fit">
+        {% for item in r.order.items.all %}
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-utensils text-[11px] text-slate-600"></i>
+                {{ item.food.name }} <span class="text-orange-500 font-bold ml-0.5">× {{ item.quantity }}</span>
+            </span>
+        {% endfor %}
+    </div>
+
+    <div class="message-quote border-white/5 mt-4 shadow-inner">
+        "{{ r.message }}"
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="text-center py-24 border-dashed border border-white/5 rounded-2xl">
+    <i class="fa-solid fa-comment-slash text-4xl block mb-4 opacity-20 text-slate-400"></i>
+    <p class="text-slate-500 font-bold uppercase tracking-widest text-xs m-0">No reviews found yet. Keep serving great food!</p>
+</div>
+
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Center - SmartBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+            --sidebar-bg: #0d111d;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Matches Image 1 Branding Header Perfectly */
+        .brand-logo {
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-gradient {
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Navigation Style Matching Image 1 */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #64748b;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 700;
+        }
+
+        .nav-item:hover { color: #f97316; }
+
+        .nav-item.active {
+            color: #f97316 !important;
+            background: rgba(249, 115, 22, 0.15) !important;
+            border-radius: 12px;
+            margin: 0 15px;
+            padding-left: 20px;
+        }
+
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+
+        /* Modernized Feedback Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: rgba(249, 115, 22, 0.3); transform: translateY(-3px); }
+
+        .avatar-box {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            color: white;
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar flex flex-col justify-between">
+        <div>
+            <div class="px-8 mb-10">
+                <h1 class="text-3xl brand-logo">
+                    <i class="fas fa-bolt" style="color: #ef4444; transform: rotate(10deg);"></i>
+                    <span class="brand-gradient">SmartBite</span>
+                </h1>
+            </div>
+            <nav class="space-y-1">
+                <a href="{% url 'dashboard' %}" class="nav-item"><i class="fas fa-th-large mr-3 text-sm"></i> Dashboard</a>
+                <a href="{% url 'menu' %}" class="nav-item"><i class="fas fa-utensils mr-3 text-sm"></i> Browse Menu</a>
+                <a href="{% url 'orders_view' %}" class="nav-item"><i class="fas fa-receipt mr-3 text-sm"></i> My Orders</a>
+                <a href="{% url 'notifications' %}" class="nav-item"><i class="fas fa-bell mr-3 text-sm"></i> Notification</a>
+                <a href="{% url 'feedback_list' %}" class="nav-item active"><i class="fas fa-star mr-3 text-sm"></i> Feedback Center</a>
+                <a href="{% url 'profile' %}" class="nav-item"><i class="fas fa-user mr-3 text-sm"></i> Profile</a>
+            </nav>
+        </div>
+
+        <div class="p-6 border-t border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="avatar-box">{{ user.username|slice:":1"|upper }}</div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-white">{{ user.username }}</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Student</p>
+                </div>
+                <form action="{% url 'logout' %}" method="post" class="m-0 inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-500 hover:scale-110 transition text-lg" title="Logout">⏻</button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="mb-10">
+            <h1 class="text-4xl font-black text-white tracking-tight">
+                <i class="fa-solid fa-comment-dots text-orange-500 mr-2 text-3xl align-middle"></i>Feedback Center
+            </h1>
+            <p class="text-slate-500 font-medium">Share your experience and thoughts on completed orders.</p>
+        </header>
+
+        <div class="max-w-4xl">
+            {% for order in orders %}
+                <div class="card shadow-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-extrabold text-white tracking-tight">Order #{{ order.id }}</h3>
+                        <span class="text-xs font-black uppercase tracking-widest bg-green-500/10 text-green-400 px-3 py-1 rounded-lg border border-green-500/10">Completed</span>
+                    </div>
+
+                    <div class="text-sm font-semibold text-slate-400 space-y-1 mb-4 bg-white/[0.01] p-3 rounded-xl border border-white/5">
+                        {% for item in order.items.all %}
+                            <div>
+                                <i class="fas fa-circle text-[6px] text-slate-600 mr-2 align-middle"></i>
+                                {{ item.food.name }} <span class="text-orange-500 font-bold ml-1">× {{ item.quantity }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="flex justify-between items-center border-t border-white/5 pt-4 mt-2">
+                        <div>
+                            <span class="text-[10px] uppercase font-black text-slate-500 tracking-wider block">Total Bill</span>
+                            <span class="text-xl font-black text-[#facc15] tracking-tighter">৳{{ order.total_price }}</span>
+                        </div>
+
+                        <a href="{% url 'feedback_page' order.id %}" class="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-orange-500/20 hover:brightness-110 active:scale-95 transition-all">
+                            Give Feedback
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="card text-center py-24 border-dashed border-white/10">
+                    <div class="text-5xl mb-4 opacity-30">💬</div>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">No completed orders yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout - SmartBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0d0d0d; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
+        .payment-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 24px; }
+        .method-btn { background: #1a1a1a; border: 1px solid #262626; transition: 0.3s; cursor: pointer; }
+        .method-btn:hover { border-color: #D4A017; background: #1f1f1f; }
+        #payment-details { display: none; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6">
+
+    <div class="payment-card w-full max-w-md p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-white tracking-tight">Secure Checkout</h1>
+            <p class="text-gray-500 text-sm">Order: {{ order.food_name }} | ৳{{ order.price }}</p>
+        </div>
+
+        <div id="methods-list" class="space-y-3">
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-4">Select Your Method</p>
+            <div onclick="showDetails('bKash')" class="method-btn p-4 rounded-2xl flex items-center gap-4 group">
+                <div class="w-10 h-10 bg-[#D12053] rounded-xl flex items-center justify-center text-white font-bold">b</div>
+                <span class="font-semibold text-gray-300 group-hover:text-white transition">bKash Payment</span>
+            </div>
+            <div onclick="showDetails('Nagad')" class="method-btn p-4 rounded-2xl flex items-center gap-4 group">
+                <div class="w-10 h-10 bg-[#F7941D] rounded-xl flex items-center justify-center text-white font-bold">n</div>
+                <span class="font-semibold text-gray-300 group-hover:text-white transition">Nagad Payment</span>
+            </div>
+        </div>
+
+        <div id="payment-details" class="mt-4">
+            <div class="bg-[#D4A017]/5 border border-[#D4A017]/20 p-6 rounded-2xl">
+                <p id="method-title" class="text-[#D4A017] font-bold mb-4 text-center text-lg"></p>
+
+                <form action="{% url 'confirm_online_payment' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_method" id="final-method-input">
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-gray-500 mb-2 block uppercase">Enter Your Account Number</label>
+                            <input type="text" name="sender_number" placeholder="01XXXXXXXXX" required
+                                   class="w-full bg-black/40 border border-gray-800 rounded-xl py-4 px-4 text-white focus:outline-none focus:border-[#D4A017] transition font-mono tracking-widest">
+                        </div>
+
+                        <div class="bg-black/20 p-3 rounded-xl">
+                            <p class="text-[10px] text-gray-500 text-center italic">
+                                Please ensure you have sent ৳{{ order.price }} to the admin number before submitting.
+                            </p>
+                        </div>
+
+                        <button type="submit" class="w-full bg-[#D4A017] text-black py-4 rounded-2xl font-bold hover:scale-[1.02] active:scale-95 transition">
+                            Confirm Order Now
+                        </button>
+
+                        <button type="button" onclick="location.reload()" class="w-full text-gray-600 text-xs hover:text-white transition mt-2">
+                            Back to Methods
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <a href="{% url 'menu' %}" class="block text-center mt-8 text-gray-600 hover:text-gray-400 text-sm">
+            <i class="fas fa-arrow-left mr-2 text-xs"></i> Cancel & Return
+        </a>
+    </div>
+
+    <script>
+        function showDetails(methodName) {
+            document.getElementById('methods-list').style.display = 'none';
+            document.getElementById('payment-details').style.display = 'block';
+            document.getElementById('method-title').innerText = methodName + " Payment";
+            document.getElementById('final-method-input').value = methodName;
+        }
+    </script>
+</body>
+</html>

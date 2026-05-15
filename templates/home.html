@@ -2,95 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Canteen</title>
+    <title>SmartBite - Digital Canteen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             height: 100vh;
-            background: linear-gradient(135deg, #232526, #414345);
+            /* Deep Navy-Charcoal background for contrast */
+            background-color: #080a12;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.08) 0px, transparent 50%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             color: white;
+            overflow: hidden;
         }
 
         .container {
             text-align: center;
+            padding: 40px;
+            z-index: 1;
+        }
+
+        /* Vibrant Orange Icon - Appetizing & Energetic */
+        .icon-circle {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 45px;
+            margin: 0 auto 30px;
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         h1 {
-            font-size: 60px;
-            margin-bottom: 10px;
-            color: #D4A017; /* Mustard */
+            font-size: 70px;
+            font-weight: 800;
+            letter-spacing: -2.5px;
+            margin-bottom: 15px;
+            /* Food Theme Gradient: Red to Orange to Yellow */
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         p {
-            font-size: 22px;
-            color: #ddd;
+            font-size: 19px;
+            color: #94a3b8;
+            margin-bottom: 45px;
+            font-weight: 400;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
 
         .buttons {
-            margin-top: 20px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .btn {
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 16px 40px;
+            border-radius: 14px;
             font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Login Button */
+        /* Primary Action: Orange (Login) */
         .login {
-            background: #D4A017;
-            color: black;
+            background: #f97316;
+            color: white;
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
         }
 
         .login:hover {
-            background: white;
-            color: black;
+            background: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(249, 115, 22, 0.5);
         }
 
-        /* Signup Button */
+        /* Secondary Action: Outlined Blue-Gray (Signup) */
+        /* Ekhane halka blue-indigo border use kora hoyeche 'Smart' feel dhore rakhte */
         .signup {
-            background: transparent;
-            border: 2px solid #D4A017;
-            color: #D4A017;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #facc15; /* Yellow text for energy */
         }
 
         .signup:hover {
-            background: #D4A017;
-            color: black;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #facc15;
+            color: #fff;
+            transform: translateY(-5px);
         }
 
     </style>
-
 </head>
 
 <body>
 
     <div class="container">
-    <h1>🍽️ Smart Canteen</h1>
-    <p>Welcome to your Smart Food Management System</p>
-
+        <div class="icon-circle">🌮</div>
+        <h1>SmartBite</h1>
+        <p>Fresh campus meals meet smart digital service. <br>Login to start your experience.</p>
 
         <div class="buttons">
             <button class="btn login" onclick="location.href='/login'">Login</button>
             <button class="btn signup" onclick="location.href='/signup/'">Signup</button>
         </div>
-</div>
+    </div>
 
 </body>
 </html>

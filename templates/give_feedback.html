@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Give Feedback</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            background: #0f0f0f;
+            color: white;
+            font-family: Arial;
+        }
+
+        .container {
+            width: 450px;
+            margin: 80px auto;
+            background: #181818;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #2c2c2c;
+        }
+
+        h2 {
+            text-align: center;
+            color: #D4A017;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        select, textarea {
+            width: 100%;
+            margin-top: 5px;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            background: #D4A017;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: gold;
+        }
+
+        .box {
+            background: #141414;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>⭐ Give Feedback</h2>
+
+    <div class="box">
+        <strong>Order #{{ order.id }}</strong><br>
+
+        {% for item in order.items.all %}
+            {{ item.food.name }} × {{ item.quantity }}<br>
+        {% endfor %}
+
+        <br>
+        Total: ৳{{ order.total_price }}
+    </div>
+
+    <form method="POST" action="{% url 'submit_feedback' order.id %}">
+        {% csrf_token %}
+
+        <label>Rating</label>
+        <select name="rating" required>
+            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+            <option value="4">⭐⭐⭐⭐ Good</option>
+            <option value="3">⭐⭐⭐ Average</option>
+            <option value="2">⭐⭐ Bad</option>
+            <option value="1">⭐ Very Bad</option>
+        </select>
+
+        <label>Message</label>
+        <textarea name="message" rows="4" placeholder="Write your feedback..." required></textarea>
+
+        <button type="submit">
+            <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>

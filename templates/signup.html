@@ -1,115 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - Smart Canteen</title>
+    <title>Signup - SmartBite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            height: 100vh;
+            /* Same Deep Navy/Charcoal Background */
+            background-color: #080a12;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.08) 0px, transparent 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white;
+            overflow: hidden;
         }
 
-        body{
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            background:linear-gradient(135deg,#232526,#414345);
-            font-family:Arial;
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 420px;
+            /* Dark Card Style */
+            background: rgba(255, 255, 255, 0.02);
+            padding: 40px;
+            border-radius: 35px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
         }
 
-        .container{
-            width:400px;
-            background:rgba(255,255,255,0.08);
-            padding:40px;
-            border-radius:20px;
-            backdrop-filter:blur(10px);
-            text-align:center;
-            box-shadow:0 0 20px rgba(0,0,0,0.3);
+        .icon-box {
+            width: 70px; height: 70px;
+            /* Appetizing Orange Gradient for Icon */
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
         }
 
-        h1{
-            color:#D4A017;
-            margin-bottom:25px;
+        h1 {
+            /* Red-Orange-Yellow Gradient for the Title */
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 5px;
         }
 
-        input, select{
-            width:100%;
-            padding:14px;
-            margin:10px 0;
-            border:none;
-            outline:none;
-            border-radius:10px;
-            font-size:15px;
+        .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 25px; }
+
+        /* Dark Modern Inputs */
+        input, select {
+            width: 100%;
+            padding: 15px 18px;
+            margin: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+            border-radius: 14px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transition: 0.3s;
         }
 
-        .btn{
-            width:100%;
-            padding:14px;
-            margin-top:15px;
-            border:none;
-            border-radius:25px;
-            background:#D4A017;
-            color:black;
-            font-size:16px;
-            cursor:pointer;
-            transition:0.3s;
+        input:focus, select:focus {
+            border-color: #f97316; /* Orange Focus Border */
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
         }
 
-        .btn:hover{
-            background:white;
+        /* Styling the Select dropdown options */
+        select option {
+            background: #080a12;
+            color: white;
         }
 
-        p{
-            color:white;
-            margin-top:15px;
+        /* The Orange Login-Style Button */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 16px;
+            background: #f97316; /* Bright Orange */
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        a{
-            color:#D4A017;
-            text-decoration:none;
+        .btn:hover {
+            background: #fb923c;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.4);
         }
+
+        p { color: #64748b; margin-top: 25px; font-size: 14px; }
+
+        /* Yellow link for visibility and vibe */
+        a { color: #facc15; text-decoration: none; font-weight: 700; }
+        a:hover { color: #fff; text-decoration: underline; }
 
     </style>
-
 </head>
 
 <body>
 
 <div class="container">
+    <div class="icon-box">🍱</div>
+    <h1>Join SmartBite</h1>
+    <p class="subtitle">Quick, Fresh, and Smart Campus Dining</p>
 
-    <h1>Create Account</h1>
-
-    <form method="POST">
+    <form method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
-
         <input type="text" name="fullname" placeholder="Full Name" required>
-
         <input type="text" name="username" placeholder="Username" required>
-
         <input type="email" name="email" placeholder="Email Address" required>
 
-        <!-- Role select (Student / Staff) -->
         <select name="role" required>
-            <option value="">Select Role</option>
+            <option value="" disabled selected>Register as...</option>
             <option value="student">Student</option>
-            <option value="staff">Staff</option>
+            <option value="staff">Canteen Staff</option>
         </select>
 
         <input type="password" name="password" placeholder="Password" required>
-
         <input type="password" name="confirm_password" placeholder="Confirm Password" required>
 
-        <button class="btn" type="submit">Sign Up</button>
-
+        <button class="btn" type="submit">Create Account</button>
     </form>
 
-    <p>Already have account? <a href="/login/">Login</a></p>
-
+    <p>Member already? <a href="/login/">Login Here</a></p>
 </div>
 
 </body>

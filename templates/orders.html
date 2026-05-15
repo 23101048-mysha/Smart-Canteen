@@ -3,301 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartBite - My Orders</title>
+    <title>My Orders - SmartBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #0d0d0d;
-            --sidebar: #111111;
-            --gold: #D4A017;
-            --card: #141414;
-            --text-muted: #888;
-            --border: #1f1f1f;
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+            --sidebar-bg: #0d111d;
         }
 
         body {
-            margin: 0;
-            background: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
-            overflow-x: hidden;
         }
 
-        /* --- Sidebar --- */
         .sidebar {
-            width: 250px;
+            width: 260px;
+            background: var(--sidebar-bg);
             height: 100vh;
-            background: var(--sidebar);
-            padding: 30px 20px;
             position: fixed;
-            border-right: 1px solid var(--border);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px 0;
             display: flex;
             flex-direction: column;
         }
 
-        .logo {
-            color: var(--gold);
-            font-size: 26px;
-            font-weight: bold;
-            margin-bottom: 40px;
-            display: block;
-            text-decoration: none;
-            padding-left: 10px;
-            letter-spacing: 1px;
+        /* Matches Image 1 Branding Header Perfectly */
+        .brand-logo {
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        .brand-gradient {
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Sidebar Nav Styles Matching Image 1 */
         .nav-item {
             display: flex;
             align-items: center;
-            color: var(--text-muted);
-            padding: 14px 15px;
+            padding: 12px 24px;
+            color: #64748b;
             text-decoration: none;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            font-size: 15px;
             transition: 0.3s;
+            font-weight: 700;
         }
 
-        .nav-item:hover {
-            background: #1a1a1a;
-            color: white;
-        }
+        .nav-item:hover { color: #f97316; }
 
         .nav-item.active {
-            background: rgba(212, 160, 23, 0.15);
-            color: var(--gold);
-            font-weight: bold;
+            color: #f97316 !important;
+            background: rgba(249, 115, 22, 0.15) !important;
+            border-radius: 12px;
+            margin: 0 15px;
+            padding-left: 20px;
         }
 
-        .nav-icon { margin-right: 12px; width: 20px; text-align: center; }
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
 
-        /* --- Main Content --- */
-        .main-content {
-            margin-left: 250px;
-            padding: 50px;
-            width: calc(100% - 250px);
-            min-height: 100vh;
-        }
-
-        header h1 { font-size: 36px; margin-bottom: 10px; }
-        header p { color: var(--text-muted); margin-bottom: 40px; }
-
-        .order-container {
-            background: var(--card);
-            border-radius: 25px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        table { width: 100%; border-collapse: collapse; }
-
-        th {
-            text-align: left;
-            color: #555;
-            font-size: 11px;
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        td {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-            color: #eee;
-        }
-
-        .order-id { font-weight: bold; color: white; font-family: monospace; font-size: 16px; }
-        .price-text { color: var(--gold); font-weight: bold; font-size: 16px; }
-
-        /* Status Badges */
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .status-ready { border: 1px solid #2ecc71; color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
-        .status-pending { border: 1px solid #f1c40f; color: #f1c40f; background: rgba(241, 196, 15, 0.1); }
-        .status-completed { border: 1px solid #3498db; color: #3498db; background: rgba(52, 152, 219, 0.1); }
-        .status-cancelled { border: 1px solid #ff4d4d; color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
-
-        .payment-tag {
-            background: #222;
-            color: #bbb;
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            border: 1px solid #333;
-            display: inline-block;
-        }
-
-        .pay-btn {
-            background: #e2136e;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 10px;
-            font-weight: bold;
-            display: inline-block;
+        /* Modernized Order Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 25px;
             transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            text-align: center;
         }
 
-        .pay-btn:hover {
-            background: #ff007f;
-            transform: scale(1.05);
-        }
+        .card:hover { border-color: rgba(249, 115, 22, 0.3); transform: translateY(-3px); }
 
-        .cancel-link {
-            color: #ff4d4d;
-            font-size: 11px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-        }
+        .badge { padding: 6px 14px; border-radius: 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .cancel-link:hover {
-            text-decoration: underline;
-            opacity: 0.8;
-        }
+        /* Premium Status Indicators */
+        .pending { background: rgba(250, 204, 21, 0.1); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.2); }
+        .ready { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .processing { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .done { background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
+        .cancelled { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
 
-        .pickup-type {
-            color: #3498db;
-            font-weight: 600;
+        .delete-btn { color: #4b5563; transition: 0.3s; border: none; background: none; cursor: pointer; }
+        .delete-btn:hover { color: #ef4444; transform: scale(1.1); }
+
+        .avatar-box {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            color: white;
+            width: 40px; height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            font-weight: 800;
         }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="no-scrollbar">
+<body>
 
-    <div class="sidebar">
+    <aside class="sidebar flex flex-col justify-between">
         <div>
-            <a href="{% url 'dashboard' %}" class="logo">SmartBite</a>
-
-            <nav>
-                <a href="{% url 'dashboard' %}" class="nav-item">
-                    <i class="fas fa-home nav-icon"></i> Dashboard
-                </a>
-                <a href="{% url 'menu' %}" class="nav-item">
-                    <i class="fas fa-utensils nav-icon"></i> Browse Menu
-                </a>
-                <a href="{% url 'orders_view' %}" class="nav-item active">
-                    <i class="fas fa-file-invoice nav-icon"></i> My Orders
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-bell nav-icon"></i> Notifications
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-star nav-icon"></i> Feedback
-                </a>
-                <a href="{% url 'profile' %}" class="nav-item">
-                    <i class="fas fa-user nav-icon"></i> Profile
-                </a>
+            <div class="px-8 mb-10">
+                <h1 class="text-3xl brand-logo">
+                    <i class="fas fa-bolt" style="color: #ef4444; transform: rotate(10deg);"></i>
+                    <span class="brand-gradient">SmartBite</span>
+                </h1>
+            </div>
+            <nav class="space-y-1">
+                <a href="{% url 'dashboard' %}" class="nav-item"><i class="fas fa-th-large mr-3 text-sm"></i> Dashboard</a>
+                <a href="{% url 'menu' %}" class="nav-item"><i class="fas fa-utensils mr-3 text-sm"></i> Browse Menu</a>
+                <a href="{% url 'orders_view' %}" class="nav-item active"><i class="fas fa-receipt mr-3 text-sm"></i> Orders</a>
+                <a href="{% url 'notifications' %}" class="nav-item"><i class="fas fa-bell mr-3 text-sm"></i> Notification</a>
+                <a href="{% url 'feedback_list' %}" class="nav-item"><i class="fas fa-star mr-3 text-sm"></i> Feedback Center</a>
+                <a href="{% url 'profile' %}" class="nav-item"><i class="fas fa-user mr-3 text-sm"></i> Profile</a>
             </nav>
         </div>
-    </div>
 
-    <div class="main-content">
-        <header>
-            <h1>My Orders</h1>
-            <p>Track your real-time order status and history</p>
+        <div class="p-6 border-t border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="avatar-box">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-white">{{ user.username }}</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Student</p>
+                </div>
+                <form action="{% url 'logout' %}" method="post" class="m-0 inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-500 hover:scale-110 transition text-lg" title="Logout">⏻</button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="mb-10">
+            <h1 class="text-4xl font-black text-white tracking-tight">My Orders</h1>
+            <p class="text-slate-500 font-medium">Track and manage your food requests</p>
         </header>
 
-        <div class="order-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date & Time</th>
-                        <th>Items</th>
-                        <th>Amount</th>
-                        <th>Pickup</th>
-                        <th>Payment</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                    <tr>
-                        <td class="order-id">{{ order.order_id }}</td>
-                        <td style="color: var(--text-muted);">{{ order.created_at|date:"M d, g:i A" }}</td>
-                        <td style="max-width: 250px; color: #ddd; font-weight: 500;">{{ order.items }}</td>
+        {% if orders %}
+            {% for order in orders %}
+                <div class="card shadow-2xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 class="text-xl font-extrabold text-white tracking-tight">Order #{{ order.id }}</h2>
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-tighter mt-1">
+                                <i class="far fa-clock mr-1"></i>{{ order.created_at|date:"M d, Y | h:i A" }}
+                            </p>
 
-                        <td class="price-text">৳ {{ order.amount }}</td>
-
-                        <td class="pickup-type">
-                            {% if order.pickup_type == "Dine-in" %}
-                                <i class="fas fa-chair text-xs"></i>
-                            {% else %}
-                                <i class="fas fa-shopping-bag text-xs"></i>
-                            {% endif %}
-                            {{ order.pickup_type }}
-                        </td>
-
-                        <td>
-                            <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <span class="payment-tag">{{ order.payment_method }}</span>
-
-                                {% if order.status == "Pending" %}
-                                    {% if order.payment_method != "Cash" %}
-                                        {% if order.is_paid %}
-                                            <span style="color: #2ecc71; font-size: 11px; font-weight: bold;">
-                                                <i class="fas fa-check-circle"></i> PAID
-                                            </span>
-                                        {% else %}
-                                            <a href="#" class="pay-btn">PAY NOW</a>
-                                        {% endif %}
-                                    {% else %}
-                                        <span style="color: #666; font-size: 11px;">Pay at Counter</span>
-                                    {% endif %}
-
-                                    <a href="{% url 'cancel_order' order.order_id %}"
-                                       class="cancel-link"
-                                       onclick="return confirm('Are you sure you want to cancel this order?')">
-                                        <i class="fas fa-times-circle"></i> Cancel Order
-                                    </a>
+                            <div class="flex gap-2 mt-4">
+                                <span class="text-[9px] bg-white/5 px-2 py-1 rounded text-slate-400 font-bold uppercase tracking-widest">{{ order.order_type }}</span>
+                                <span class="text-[9px] bg-white/5 px-2 py-1 rounded text-slate-400 font-bold uppercase tracking-widest">{{ order.payment_method }}</span>
+                                {% if order.payment_status %}
+                                    <span class="text-[9px] bg-green-500/10 px-2 py-1 rounded text-green-500 font-bold uppercase tracking-widest border border-green-500/10">Paid</span>
+                                {% else %}
+                                    <span class="text-[9px] bg-red-500/10 px-2 py-1 rounded text-red-400 font-bold uppercase tracking-widest border border-red-500/10">Unpaid</span>
                                 {% endif %}
                             </div>
-                        </td>
+                        </div>
 
-                        <td>
-                            {% if order.status == "Ready" %}
-                                <span class="status-badge status-ready">Ready</span>
-                            {% elif order.status == "Completed" %}
-                                <span class="status-badge status-completed">Completed</span>
-                            {% elif order.status == "Cancelled" %}
-                                <span class="status-badge status-cancelled">Cancelled</span>
-                            {% else %}
-                                <span class="status-badge status-pending">Pending</span>
+                        <div class="flex items-center gap-4">
+                            <span class="badge
+                                {% if order.status == 'Pending' %}pending
+                                {% elif order.status == 'Ready' %}ready
+                                {% elif order.status == 'In Process' %}processing
+                                {% elif order.status == 'Done' %}done
+                                {% else %}cancelled{% endif %}">
+                                {{ order.status }}
+                            </span>
+
+                            {% if order.status == 'Pending' %}
+                                <form action="{% url 'delete_order' order.id %}" method="POST" onsubmit="return confirm('Are you sure you want to cancel and delete this order?');" class="m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-btn" title="Cancel Order">
+                                        <i class="fas fa-times-circle text-xl"></i>
+                                    </button>
+                                </form>
                             {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="7" style="text-align: center; color: #555; padding: 100px; font-size: 18px;">
-                            <i class="fas fa-box-open" style="display: block; font-size: 40px; margin-bottom: 10px;"></i>
-                            No orders found yet. Start ordering from the menu!
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-t border-white/5 pt-5">
+                        {% for item in order.items.all %}
+                            <div class="flex justify-between items-center text-sm font-semibold">
+                                <span class="text-slate-300">
+                                    <i class="fas fa-utensils mr-2 text-[10px] text-slate-600"></i>
+                                    {{ item.food.name }}
+                                    <span class="text-orange-500 ml-2 bg-orange-500/5 px-2 py-0.5 rounded text-[10px]">× {{ item.quantity }}</span>
+                                </span>
+                                <span class="font-bold text-white">৳ {{ item.food.price }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-6 pt-5 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-slate-500 font-black uppercase text-[10px] tracking-widest">Grand Total</span>
+                        <span class="text-2xl font-black text-[#facc15] tracking-tighter">৳ {{ order.total_price }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-32 bg-white/5 rounded-[40px] border border-dashed border-white/10">
+                <div class="text-6xl mb-4 opacity-40">📦</div>
+                <h2 class="text-xl font-bold text-slate-400">No orders found</h2>
+                <p class="text-slate-600 text-sm mt-1">You haven't placed any orders yet.</p>
+                <a href="{% url 'menu' %}" class="inline-block mt-8 px-8 py-3 bg-[#f97316] text-white rounded-2xl font-extrabold uppercase tracking-widest hover:bg-[#ef4444] transition-all shadow-lg shadow-orange-500/20 active:scale-95">
+                    Start Ordering
+                </a>
+            </div>
+        {% endif %}
+    </main>
 
 </body>
 </html>

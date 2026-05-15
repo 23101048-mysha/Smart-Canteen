@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="30">
+    <title>SmartBite - Staff Order Queue</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+            --sidebar-bg: #0d111d;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR WRAPPER LAYOUT --- */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+            height: 100vh;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-gradient {
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar a.nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #64748b;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 700;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .sidebar a.nav-item:hover {
+            color: #f97316;
+        }
+
+        .active-link {
+            color: #facc15 !important;
+            background: rgba(250, 204, 21, 0.1) !important;
+            border-radius: 14px;
+            margin: 0 15px;
+            padding-left: 20px !important;
+        }
+
+        .avatar-box {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* --- STATS CONSOLE COMPONENT --- */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(249, 115, 22, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .top-item-badge {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.15);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #f97316;
+            display: inline-block;
+            margin-right: 6px;
+            margin-top: 6px;
+        }
+
+        /* --- DATA TABLES ARCHITECTURE --- */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        thead tr {
+            background: rgba(255, 255, 255, 0.01) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            padding: 16px 20px;
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #64748b !important;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            background: transparent;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* --- VISUAL INTERACTIVE CONTROLS --- */
+        .status-pill {
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-pending { background: rgba(249, 115, 22, 0.1); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.15); }
+        .status-processing { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.15); }
+        .status-ready { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.15); }
+
+        .type-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-outline-process { background: rgba(249, 115, 22, 0.1); border: 1px solid #f97316; color: #f97316; }
+        .btn-outline-ready { background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #22c55e; }
+        .btn-filled-done { background: #fff; color: #000; border: 1px solid #fff; }
+
+        .btn-outline-process:hover { background: #f97316; color: #fff; }
+        .btn-outline-ready:hover { background: #22c55e; color: #fff; }
+        .btn-filled-done:hover { background: var(--primary-yellow); border-color: var(--primary-yellow); color: #000; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="px-6 mb-6">
+            <h1 class="text-3xl brand-logo">
+                <span style="font-size: 24px;">👨‍🍳</span>
+                <span class="brand-gradient">SmartBite</span>
+            </h1>
+        </div>
+
+        <p class="text-slate-500 font-black tracking-widest uppercase mb-2 px-6 text-[10px]">OPERATIONS</p>
+
+        <a href="{% url 'staff_dashboard' %}" class="nav-item">
+            <i class="fa-solid fa-th-large text-sm"></i> Dashboard
+        </a>
+        <a href="{% url 'order_queue' %}" class="nav-item active-link">
+            <i class="fa-solid fa-list-check text-sm"></i> Orders Queue
+        </a>
+        <a href="{% url 'manage_menu' %}" class="nav-item">
+            <i class="fa-solid fa-utensils text-sm"></i> Manage Menu
+        </a>
+
+        <p class="text-slate-500 font-black tracking-widest uppercase mt-4 mb-2 px-6 text-[10px]">REPORTS</p>
+        <a href="{% url 'staff_payments' %}" class="nav-item"><i class="fa-solid fa-wallet text-sm"></i> Payments</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-star text-sm"></i> Reviews</a>
+
+        <div class="mt-auto border-t border-white/5 pt-4 px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="avatar-box">{{ request.user.username|slice:":1"|upper }}</div>
+                <div>
+                    <span class="block text-sm font-bold text-white leading-tight">{{ request.user.username }}</span>
+                    <span class="block text-slate-500 uppercase font-black text-[9px] tracking-wider mt-0.5">Staff Member</span>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="text-slate-500 hover:text-red-500 transition"><i class="fa-solid fa-power-off text-base"></i></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="stats-container">
+            <div class="stat-card shadow-xl">
+                <p class="text-slate-500 font-black uppercase text-[10px] tracking-widest mb-1.5"><i class="fa-solid fa-fire text-orange-500 me-1"></i> Top Selling ({{ current_month }})</p>
+                <div class="flex flex-wrap">
+                    {% for item in top_selling %}
+                        <div class="top-item-badge">{{ item.food__name }} <span class="font-black text-white/50 ml-1">{{ item.total_sold }}</span></div>
+                    {% empty %}
+                        <p class="text-slate-600 font-medium text-xs italic m-0 mt-1">No sales data recorded</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="stat-card shadow-xl">
+                <p class="text-slate-500 font-black uppercase text-[10px] tracking-widest mb-1"><i class="fa-solid fa-clock text-blue-500 me-1"></i> Active Orders</p>
+                <h1 class="text-[#facc15] font-black tracking-tighter m-0 text-3xl mt-1">{{ pending_list.count }}</h1>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-3xl font-black text-white tracking-tight">Orders Queue</h2>
+                <p class="text-slate-500 font-medium text-sm">Real-time incoming orders workflow pipeline</p>
+            </div>
+
+            <div class="flex gap-2">
+                <span class="status-pill status-pending">● Pending</span>
+                <span class="status-pill status-processing">● Processing</span>
+                <span class="status-pill status-ready">● Ready</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr class="text-slate-500 border-b border-white/5">
+                        <th>Order ID</th>
+                        <th>Student / Customer</th>
+                        <th>Type</th>
+                        <th>Items Summary</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action Wrapper</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in pending_list %}
+                    <tr class="transition">
+                        <td class="text-[#facc15] font-black text-base">#{{ order.id }}</td>
+                        <td>
+                            <span class="font-bold text-white text-sm block">{{ order.customer_name }}</span>
+                            <small class="text-slate-500 font-semibold text-[11px] tracking-wide uppercase">{{ order.payment_method }}</small>
+                        </td>
+
+                        <td>
+                            {% if order.order_type == "Dine-in" %}
+                                <span class="type-badge text-sky-400 bg-sky-500/10 border border-sky-500/10">
+                                    <i class="fa-solid fa-utensils text-[10px]"></i> Dine-in
+                                </span>
+                            {% else %}
+                                <span class="type-badge text-amber-400 bg-amber-500/10 border border-amber-500/10">
+                                    <i class="fa-solid fa-bag-shopping text-[10px]"></i> Takeaway
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-slate-300 font-medium text-sm max-w-[250px] truncate">
+                            {% for item in order.items.all %}
+                                {{ item.food.name }} <span class="text-orange-500 font-bold text-xs">×{{ item.quantity }}</span>{% if not forloop.last %}<span class="text-slate-600 mx-1">,</span>{% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td class="text-white font-black text-base">৳{{ order.total_price }}</td>
+
+                        <td>
+                            <span class="status-pill {% if order.status == 'Pending' %}status-pending{% elif order.status == 'In Process' %}status-processing{% else %}status-ready{% endif %}">
+                                ● {{ order.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="flex items-center gap-3">
+
+                                {% if order.status == "Pending" %}
+                                    <a href="{% url 'mark_in_process' order.id %}" class="action-btn btn-outline-process">Process</a>
+
+                                {% elif order.status == "In Process" %}
+                                    <a href="{% url 'mark_ready' order.id %}" class="action-btn btn-outline-ready">Mark Ready</a>
+
+                                {% elif order.status == "Ready" %}
+                                    <a href="{% url 'mark_done' order.id %}" class="action-btn btn-filled-done">Done</a>
+                                {% endif %}
+
+                                <a href="{% url 'cancel_order' order.id %}" onclick="return confirm('Cancel Order #{{ order.id }}?')" class="text-slate-600 hover:text-red-500 transition duration-200">
+                                    <i class="fa-solid fa-circle-xmark text-lg align-middle"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="py-20 text-slate-500 text-center">
+                            <i class="fa-solid fa-inbox text-4xl block mb-3 opacity-20 text-slate-400"></i>
+                            <p class="font-bold uppercase tracking-widest text-xs m-0">No active orders in the queue</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Food
 from django.contrib.auth.models import User
 
 class ProfileUpdateForm(forms.ModelForm):
@@ -14,3 +14,8 @@ class ProfileUpdateForm(forms.ModelForm):
 
         model = Profile
         fields = ['full_name', 'email', 'phone', 'department', 'student_id', 'role']
+
+        class FoodForm(forms.ModelForm):
+            class Meta:
+                model = Food
+                fields = ['name']

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Reports | Staff</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+            max-width: 900px;
+            padding-bottom: 50px;
+        }
+
+        .title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+        }
+
+        .title {
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #fff;
+            margin: 0;
+        }
+
+        .total-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 35px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .total-card:hover {
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        .total-card h3 {
+            background: linear-gradient(to right, #facc15, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: -1.5px;
+        }
+
+        .card-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: 0.3s ease;
+        }
+
+        .card-box:hover {
+            border-color: rgba(249, 115, 22, 0.2);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .customer-info .name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin-top: 4px;
+        }
+
+        .order-number {
+            font-size: 11px;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 900;
+        }
+
+        .item-list {
+            background: rgba(255, 255, 255, 0.01);
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .method-badge {
+            font-size: 10px;
+            font-weight: 900;
+            padding: 6px 14px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge-online {
+            background: rgba(13, 202, 240, 0.1);
+            color: #0dcaf0;
+            border: 1px solid rgba(13, 202, 240, 0.15);
+        }
+
+        .badge-cash {
+            background: rgba(250, 204, 21, 0.1);
+            color: #facc15;
+            border: 1px solid rgba(250, 204, 21, 0.15);
+        }
+
+        .amount-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .price-text {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #22c55e;
+            letter-spacing: -0.5px;
+        }
+
+        .status-paid {
+            color: #22c55e;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title-section">
+        <h2 class="title flex align-items-center gap-2">
+            <i class="fas fa-file-invoice-dollar text-orange-500"></i> Payment Reports
+        </h2>
+        <a href="{% url 'staff_dashboard' %}" class="back-btn">
+            <i class="fas fa-arrow-left me-1"></i> Dashboard
+        </a>
+    </div>
+
+    <div class="total-card shadow-2xl">
+        <p class="text-slate-500 font-black uppercase text-[10px] tracking-widest mb-2">Total Revenue Collected</p>
+        <h3>৳{{ total_earned }}</h3>
+    </div>
+
+    <h5 class="mb-4 text-slate-400 font-extrabold uppercase text-[11px] tracking-widest">Recent Transactions</h5>
+
+    {% for order in payments %}
+        {% if order.payment_status %}
+        <div class="card-box shadow-2xl">
+
+            <div class="order-header">
+                <div class="customer-info">
+                    <span class="order-number">Order #{{ order.id }}</span>
+                    <div class="name">
+                        <i class="fas fa-user-circle me-2 text-slate-500"></i>{{ order.customer_name }}
+                    </div>
+                </div>
+
+                {% if order.payment_method == 'Online' %}
+                    <span class="method-badge badge-online">
+                        <i class="fas fa-globe me-1"></i> ONLINE
+                    </span>
+                {% else %}
+                    <span class="method-badge badge-cash">
+                        <i class="fas fa-money-bill-wave me-1"></i> CASH
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="item-list">
+                <div class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2">Ordered Items:</div>
+                {% for item in order.items.all %}
+                    <div class="d-flex justify-content-between mb-1.5 font-semibold text-sm">
+                        <span class="text-slate-300">{{ item.food.name }} <span class="text-orange-500 text-xs ml-1">x{{ item.quantity }}</span></span>
+                        <span class="text-white">৳{{ item.food.price }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="amount-section">
+                <div class="status-paid">
+                    <i class="fas fa-check-circle"></i>
+                    {% if order.payment_method == 'Cash' %}
+                        CASH RECEIVED BY STAFF
+                    {% else %}
+                        PAID VIA ONLINE GATEWAY
+                    {% endif %}
+                </div>
+                <div class="price-text">
+                    ৳{{ order.total_price }}
+                </div>
+            </div>
+
+            <div class="mt-3 text-[11px] font-bold text-slate-500 flex align-items-center gap-1">
+                <i class="far fa-clock text-xs"></i> {{ order.created_at|date:"M d, Y | h:i A" }}
+            </div>
+
+        </div>
+        {% endif %}
+    {% empty %}
+        <div class="text-center py-5 border-dashed border border-white/5 rounded-2xl my-5">
+            <i class="fas fa-receipt fa-4x text-slate-600 mb-3 opacity-20"></i>
+            <h5 class="text-slate-400 font-extrabold uppercase tracking-widest text-xs">No transactions recorded yet.</h5>
+            <p class="small text-slate-600 font-medium m-0 mt-1">Completed orders with payments will appear here.</p>
+        </div>
+    {% endfor %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

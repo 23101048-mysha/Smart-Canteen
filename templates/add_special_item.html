@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Special Item</title>
+
+    <style>
+        body{
+            background:#121212;
+            color:white;
+            font-family: Arial, sans-serif;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .box{
+            background:#1e1e1e;
+            padding:30px;
+            border-radius:15px;
+            width:320px;
+            border:1px solid #333;
+        }
+
+        h2{
+            text-align:center;
+            color:#D4A017;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:8px 0;
+            border-radius:8px;
+            border:none;
+            outline:none;
+        }
+
+        input[type="file"]{
+            background:#2a2a2a;
+            color:white;
+            padding:10px;
+        }
+
+        button{
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            background:#D4A017;
+            border:none;
+            border-radius:8px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#c49314;
+        }
+
+        .back{
+            display:block;
+            text-align:center;
+            margin-top:10px;
+            color:#aaa;
+            text-decoration:none;
+            font-size:13px;
+        }
+
+        .back:hover{
+            color:#fff;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>➕ Add Special Item</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="text" name="name" placeholder="Item Name" required>
+
+        <input type="number" name="price" placeholder="Price (৳)" required>
+
+        <!-- Image upload instead of emoji -->
+        <input type="file" name="image" accept="image/*" required>
+
+        <button type="submit">Add Item</button>
+
+    </form>
+
+    <a href="{% url 'staff_dashboard' %}" class="back">⬅ Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
