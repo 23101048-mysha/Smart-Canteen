@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBite - Notifications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --primary-red: #ef4444;
+            --primary-yellow: #facc15;
+            --bg-dark: #080a12;
+            --sidebar-bg: #0d111d;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .brand-logo {
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-gradient {
+            background: linear-gradient(to right, #ef4444, #f97316, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #64748b;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 700;
+        }
+
+        .nav-item:hover { color: #f97316; }
+
+        .nav-item.active {
+            color: #f97316 !important;
+            background: rgba(249, 115, 22, 0.15) !important;
+            border-radius: 12px;
+            margin: 0 15px;
+            padding-left: 20px;
+        }
+
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+
+
+        .notif-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .notif-card:hover {
+            border-color: rgba(249, 115, 22, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateX(4px);
+        }
+
+        .badge-count {
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-left: auto;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .avatar-box {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            color: white;
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar flex flex-col justify-between">
+        <div>
+            <div class="px-8 mb-10">
+                <h1 class="text-3xl brand-logo">
+                    <i class="fas fa-bolt" style="color: #ef4444; transform: rotate(10deg);"></i>
+                    <span class="brand-gradient">SmartBite</span>
+                </h1>
+            </div>
+            <nav class="space-y-1">
+                <a href="{% url 'dashboard' %}" class="nav-item"><i class="fas fa-th-large mr-3 text-sm"></i> Dashboard</a>
+                <a href="{% url 'menu' %}" class="nav-item"><i class="fas fa-utensils mr-3 text-sm"></i> Browse Menu</a>
+                <a href="{% url 'orders_view' %}" class="nav-item"><i class="fas fa-receipt mr-3 text-sm"></i> My Orders</a>
+                <a href="{% url 'notifications' %}" class="nav-item active">
+                    <i class="fas fa-bell mr-3 text-sm"></i> Notifications
+                    {% if unread_count > 0 %}
+                        <span class="badge-count">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'reviews_list' %}" class="nav-item"><i class="fas fa-star mr-3 text-sm"></i> Feedback / Reviews</a>
+                <a href="{% url 'profile' %}" class="nav-item"><i class="fas fa-user-circle mr-3 text-sm"></i> Profile</a>
+            </nav>
+        </div>
+
+        <div class="p-6 border-t border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="avatar-box">{{ request.user.username|slice:":1"|upper }}</div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-white">{{ request.user.username }}</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">{{ profile.role|default:"STUDENT" }}</p>
+                </div>
+                <a href="{% url 'logout' %}" class="text-red-500 hover:scale-110 transition text-lg" title="Logout">
+                    ⏻
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="mb-10">
+            <h1 class="text-4xl font-black text-white tracking-tight">Notifications</h1>
+            <p class="text-slate-500 font-medium">Stay updated with your order status and news.</p>
+        </header>
+
+        <div class="max-w-4xl">
+            {% for n in notifications %}
+                <div class="notif-card flex items-start gap-4">
+                    <div class="mt-1.5">
+                        <div class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-slate-200 font-semibold leading-relaxed">{{ n.message }}</p>
+                        <div class="flex items-center gap-2 mt-2 text-slate-500 text-[11px] font-bold uppercase tracking-wider">
+                            <i class="far fa-clock"></i>
+                            <span>{{ n.created_at|timesince }} ago</span>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="notif-card text-center py-24 border-dashed border-white/10">
+                    <i class="fas fa-bell-slash text-4xl text-slate-700 mb-4"></i>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">You have no new notifications.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>

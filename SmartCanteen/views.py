@@ -92,7 +92,7 @@ def dashboard(request):
         'specials': specials,
         'active_orders': active_orders, # Context-e active order pathano holo
         'current_date': datetime.now(),
-        'unread_count': unread_count
+        'unread_notifications_count': unread_count
     })
 @login_required
 def menu(request):
@@ -163,6 +163,7 @@ def handle_order(request):
             return redirect('menu')
 
     return redirect('menu')
+
 @login_required
 def confirm_online_payment(request):
     data = request.session.get('pending_order')
@@ -269,6 +270,7 @@ def orders_view(request):
     ).prefetch_related('items', 'items__food').order_by('-created_at')
 
     return render(request, 'orders.html', {'orders': orders})
+
 #  DELETE ORDER
 @login_required
 def delete_order(request, order_id):
@@ -425,6 +427,7 @@ def profile_view(request):
     return render(request, 'profile.html', {
         'user_profile': profile
     })
+
 #  MANAGE MENU
 @login_required
 def manage_menu(request):
